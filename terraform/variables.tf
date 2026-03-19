@@ -10,7 +10,7 @@ variable "project_id" {
 
 variable "credentials" {
   description = "credentials for gcp service account"
-  default     = "keys.json" # this file must be placed in the terraform directory
+  default     = "keys.json" # this file must be created and placed in the terraform directory
 }
 
 variable "region" {
@@ -30,5 +30,5 @@ variable "storage_class" {
 
 variable "location" {
     description = "resource location"
-    default = "EU"
+    default = "EU" # you can adjust based on your location
 }
