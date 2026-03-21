@@ -1,5 +1,4 @@
-pandas 
-pyarrow
-apache-airflow[google]
-sqlalchemy
-psycopg2-binary
+apache-airflow-providers-google
+google-cloud-storage
+google-cloud-bigquery
+requests
