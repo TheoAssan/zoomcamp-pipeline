@@ -1,13 +1,17 @@
-with medallists as (
-    select * from {{ref("stg_Milano_26__medallists_winter26")}}
+with athletes as (
+    select distinct country_code from {{ref("stg_Milano_26__athletes_winter26")}}
 ),
 
-countries as (
+codes_lookup as (
     select 
-        distinct country_code,
-        {{gen_country_name(country_code)}}
-    from medallists
-    order by country_code asc 
+        country_code,
+        country_name
+    from {{ ref('ioc_codes') }}
 )
 
-select * from countries 
+select  
+    a.country_code,
+    c.country_name
+from athletes a 
+left join codes_lookup c on a.country_code = c.country_code
+order by a.country_code asc 
