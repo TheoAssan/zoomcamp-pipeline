@@ -1,9 +1,14 @@
 sources:
   - name: Milano_26
-    database: de-zoomcamp26-487314 # INSERT YOUR BQ NAME Project Name Here
+    database: "{{ var('gcp_project_id') }}"
     schema: olympics_pipeline
+    description: "Raw Milano-Cortina 2026 Winter Olympics data loaded from Kaggle via Airflow into BigQuery"
     tables: 
       - name: schedules_winter26
+        description: "Event schedules with dates, venues, disciplines, and phases"
       - name: medals_winter26
+        description: "Medal tally by country (gold, silver, bronze, total, rank)"
       - name: medallists_winter26
+        description: "Individual medallist records with athlete, country, discipline, and event"
       - name: athletes_winter26
+        description: "Athlete profiles with country, gender, and events"

@@ -23,11 +23,6 @@ variable "gcs_bucket_name" {
   default     = "zc-olympicsdatalake-26"
 }
 
-variable "storage_class" {
-  description = "Storage class type for your bucket. Check official docs for more info."
-  default     = "STANDARD"
-}
-
 variable "location" {
     description = "resource location"
     default = "EU" # you can adjust based on your location

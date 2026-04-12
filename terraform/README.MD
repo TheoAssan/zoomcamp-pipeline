@@ -44,6 +44,9 @@ Enable the following APIs for your project:
 - **IAM Credentials API**
 
 You can enable them via: **APIs & Services → Library** in the GCP Console.
+
+---
+
 # 🌍 Terraform Configuration Guide
 
 This guide walks you through setting up and running your Terraform project using Google Cloud Platform (GCP).
@@ -52,59 +55,79 @@ This guide walks you through setting up and running your Terraform project using
 
 ## 📦 Prerequisites
 
-Before you begin, ensure you have Terraform installed on your system so you can run commands like:
+### Install Terraform
 
+**Linux / WSL / Codespaces (Debian/Ubuntu):**
 ```bash
-terraform init
-terraform plan
-terraform apply
+sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
+
+wget -O- https://apt.releases.hashicorp.com/gpg | \
+  gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+  https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+  sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+sudo apt-get update && sudo apt-get install terraform
 ```
 
-To make your environment reproducible and avoid manual installation, you can use a VS Code Dev Container.
+**macOS (Homebrew):**
+```bash
+brew tap hashicorp/tap
+brew install hashicorp/tap/terraform
+```
 
-Create a .devcontainer directory in your project root
+**Verify installation:**
+```bash
+terraform --version
+```
 
-Inside it, create a file named devcontainer.json
-
-Paste the following configuration:
-
-```json
-
-{
-  "name": "Terraform Codespace",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "features": {
-    "ghcr.io/devcontainers/features/terraform:1": {
-      "version": "latest"
-    }
-  }
-}
-``` 
+---
 
 ## ⚙️ Step 1: Configure Project Variables
 
-Replace the `project_id` and credentials-related variables in your Terraform configuration with your actual **Google Cloud Project ID** and service account credentials.
+1. Copy your GCP service account key (JSON file) into this directory as `keys.json`.
 
-> **Note:**  
-> After downloading your GCP service account key (JSON file), copy its contents into a file named `keys.json` inside your Terraform directory.
+2. Replace the `project_id` default in `variables.tf` with your actual GCP Project ID.
 
-> **Tip:**  
-> You can keep the default file paths and locations provided in this project. However, if you choose to modify them, ensure the changes are consistently reflected across your Terraform configuration files.
+> **Note:** The `keys.json` file is git-ignored for security. Never commit credentials.
+
+> **Tip:** You can keep the default values for `region`, `location`, `gcs_bucket_name`, and `credentials` provided in `variables.tf`. Adjust them if your setup differs.
 
 ---
 
 ## 🚀 Step 2: Initialize and Apply Terraform
 
-Ensure you are inside the Terraform directory, then run the following commands:
+Ensure you are inside the `terraform/` directory, then run:
 
 ```bash
-terraform init
-terraform plan
-terraform apply
+terraform init      # Initializes providers and modules
+terraform plan      # Preview infrastructure changes
+terraform apply     # Create the GCS bucket and BigQuery dataset
 ```
 
-terraform init → Initializes the working directory and installs required providers
+---
 
-terraform plan → Shows a preview of the infrastructure changes
+## 🔗 Step 3: Generate Environment File
 
-terraform apply → Provisions the resources on GCP
+After `terraform apply` completes, run the helper script to generate a `.env` file for Airflow:
+
+```bash
+bash generate_env.sh
+```
+
+This reads the Terraform outputs (`outputs.tf`) and writes `../airflow/.env` with all the GCP configuration values. The Airflow DAGs and docker-compose will pick them up automatically.
+
+---
+
+## 📁 File Structure
+
+```
+terraform/
+├── main.tf              # GCS bucket + BigQuery dataset resources
+├── variables.tf         # Input variables (project_id, region, etc.)
+├── outputs.tf           # Exported values for downstream tools
+├── generate_env.sh      # Script to generate airflow/.env from outputs
+├── keys.json            # Your GCP service account key (git-ignored)
+└── README.MD            # This file
+```
