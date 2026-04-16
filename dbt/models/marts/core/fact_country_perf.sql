@@ -3,6 +3,8 @@ with countries as (
     select * from {{ ref('dim_countries') }}
 ),
 
+-- AIN (Individual Neutral Athletes) are not included in the official medals tally table.
+-- Their medals are aggregated from individual medallist records in fact_discipline instead.
 ain_medals as (
     select
         country_code,

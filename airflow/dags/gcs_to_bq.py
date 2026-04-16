@@ -1,19 +1,21 @@
-from datetime import datetime
-from airflow.decorators import dag, task
 import os
+from datetime import datetime
 
-GCS_BUCKET = "zc-olympicsdatalake-26"
-GCP_PROJECT = "de-zoomcamp26-487314"
-GCS_PREFIX = "Milano-Cortina-2026"
-BQ_DATASET = "olympics_pipeline"
+from airflow.decorators import dag, task
+
+GCS_BUCKET  = os.environ.get("GCS_BUCKET_NAME")
+GCP_PROJECT = os.environ.get("GCP_PROJECT_ID")
+GCS_PREFIX  = os.environ.get("GCS_PREFIX")
+BQ_DATASET  = os.environ.get("BQ_DATASET_ID")
 
 
 @dag(
     dag_id="gcs_to_bigquery",
     description="Load parquet files from GCS into BigQuery",
     schedule=None,
-    start_date=datetime(2024, 1, 1),
+    start_date=datetime(2026, 1, 1),
     catchup=False,
+    tags=["olympics", "bigquery"],
 )
 def gcs_to_bigquery():
 
@@ -39,7 +41,7 @@ def gcs_to_bigquery():
         dataset_ref = bigquery.DatasetReference(GCP_PROJECT, BQ_DATASET)
         try:
             client.get_dataset(dataset_ref)
-        except:
+        except Exception:
             client.create_dataset(bigquery.Dataset(dataset_ref))
         
         for blob_name in blob_names:

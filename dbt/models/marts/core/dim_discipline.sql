@@ -6,7 +6,7 @@ discipline as (
     select 
         distinct discipline_code,
         case 
-            when discipline = "Snowboard" then "Snowboarding"
+            when discipline = 'Snowboard' then 'Snowboarding'
             else discipline
         end as discipline
     from schedules

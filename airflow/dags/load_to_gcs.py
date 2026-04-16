@@ -9,14 +9,13 @@ import pandas as pd
 import requests
 from airflow.sdk import dag, task
 
-GCS_BUCKET       = "zc-olympicsdatalake-26"
-GCP_PROJECT      = "de-zoomcamp26-487314"
+GCS_BUCKET       = os.environ.get("GCS_BUCKET_NAME")
+GCP_PROJECT      = os.environ.get("GCP_PROJECT_ID")
 GCS_PREFIX       = "Milano-Cortina-2026"
 DATA_URL         = (
     "https://www.kaggle.com/api/v1/datasets/download/"
     "piterfm/milano-cortina-2026-olympic-winter-games"
 )
-CREDENTIALS_PATH = "/opt/airflow/terraform/keys.json"
 
 
 @dag(

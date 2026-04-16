@@ -5,7 +5,7 @@ variable "bq_dataset_id" {
 
 variable "project_id" {
   description = "GCP Project ID"
-  default     = "xxxx-xxxx-xxxx" # replace with your actual project id from GCP
+  #default     = "xxxx-xxxx-xxxx" # replace with your actual project id from GCP
 }
 
 variable "credentials" {
@@ -21,11 +21,6 @@ variable "region" {
 variable "gcs_bucket_name" {
   description = "Name of the storage bucket"
   default     = "zc-olympicsdatalake-26"
-}
-
-variable "storage_class" {
-  description = "Storage class type for your bucket. Check official docs for more info."
-  default     = "STANDARD"
 }
 
 variable "location" {
