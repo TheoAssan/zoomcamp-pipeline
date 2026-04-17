@@ -1,4 +1,4 @@
-# dbt — Milano-Cortina 2026 Winter Olympics
+# Olympics data transformation
 
 This dbt project transforms raw Olympic data (loaded into BigQuery by Airflow) into a dimensional star schema for analytics and dashboarding.
 
@@ -38,20 +38,26 @@ Mart models build the star schema from staged data.
 | `fact_country_perf` | Country-level medal counts, athlete counts, and medal conversion rate |
 | `fact_discipline` | Medal counts aggregated by country, discipline, and medal type |
 
+
 ### Seeds
 
 | Seed | Description |
 |---|---|
 | `ioc_codes` | International Olympics Committee country code → country name lookup (208 countries) |
 
-## Setup (dbt Cloud)
-\
+<p >
+  <img src="../images/lineage.png" alt="DBT Lineage" width="1000"/> 
+</p>
 
-1. Create a **dbt Cloud** account at [cloud.getdbt.com](https://cloud.getdbt.com)
+
+## Setup (dbt Cloud)
+
+
+1. Create a **dbt Cloud** account 
 2. Create a new project and connect it to your repository
 3. Set the **BigQuery connection** in **Account Settings → Projects → Connections**:
    - Upload your GCP service account key JSON file
-   - Dataset location must match what you originally used as your default location in Terraform. If you did not alter the default location in Terraform, it is likely 'us-central1' in dbt so ensure that it is changed to EU
+   - **Dataset location must match what you originally used as your default location in Terraform. If you did not alter the default location in Terraform, it is likely 'us-central1' in dbt so ensure that it is changed to EU**
    - use 'dbt' as the project sub-directory
 4. In dbt/models/staging/sources.yaml, change the database name to match your GCP project ID
 5. Run the following in the dbt Cloud IDE:
@@ -88,6 +94,7 @@ dbt/
 │           └── fact_discipline.sql
 └── README.md                            # This file
 ```
+
 
 ## Resources
 
