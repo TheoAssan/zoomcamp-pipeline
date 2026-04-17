@@ -1,16 +1,19 @@
 <p align="center">
   <img src="images/logo.png" alt="Milano Cortina 2026" width="150"/> <br>
-  <h1> Milano-Cortina 2026 Winter Olympics Data Pipeline</h1>
+  
 </p>
 
-<p align = "center"></p>
-
+<div align="center">
+  <h1> Milano-Cortina 2026 Winter Olympics Data Pipeline</h1>
+  
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![dbt](https://img.shields.io/badge/dbt-FF694B?style=for-the-badge&logo=dbt&logoColor=white)
 ![Airflow](https://img.shields.io/badge/Airflow-444444?style=for-the-badge&logo=apacheairflow&logoColor=auto)
 ![GCP](https://img.shields.io/badge/GCP-FFFFFF?style=for-the-badge&logo=googlecloud&logoColor=auto)
 ![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=for-the-badge&logo=terraform&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+
+</div>
 
 
 
@@ -49,10 +52,16 @@ The analysis answers questions such as:
 </p> 
 
 Country Performances analyzes the performances of the participating countries: 
-- **Geographic Location** : shows where the country is located on the world map.
-- **Medal standings** : ranks the top 10 nations by medals won using a stacked bar which shows the number of gold, silver and bronze medals won. When a country is selected, it displays the medals won for that singular selected country.
-- **Total medals**,**Number of participating countries** : are dynamic scorecards which show the total value of what they represent when unfiltered. When a country is selected, the re-aggregate the values for that singular country selected.
-- **Medal Distribution By Discipline** : by default indicates the total number of medals awarded per discipline, when a country is selected, it shows the disciplines in which the medals were obtained.
+- **Geographic Location** : shows where the country is located on the world map.<br>
+Data Source = fact_country_perf
+
+- **Medal standings** : ranks the top 10 nations by medals won using a stacked bar which shows the number of gold, silver and bronze medals won. When a country is selected, it displays the medals won for that singular selected country.<br>
+Data Source = fact_country_perf
+- **Total medals** , **Number of participating countries** : are dynamic scorecards which show the total value of what they represent when unfiltered. When a country is selected, the re-aggregate the values for that singular country selected.<br>
+Data Source = fact_country_perf
+
+- **Medal Distribution By Discipline** : by default indicates the total number of medals awarded per discipline, when a country is selected, it shows the disciplines in which the medals were obtained.<br>
+Data Source = fact_discipline
 
 ### Athlete Performances
 
@@ -61,10 +70,17 @@ Country Performances analyzes the performances of the participating countries:
   <img src="images/ath_filt.png" width="400"/>
 </p>
 
-- **Medallists Leaderboard**: Displays the total number of medals,names,countries,gender and discipline of athletes who won medals **only**.This is sorted in descending order. When a country is selected, it displays the medallists and their corresponding data for the selected country.
-- **Podium Profile** : Displays the type of medals won by the athletes
-- **Number of participating athletes,Gender Doughnut**: By default displays the total number of athletes who participated in the winter olympics segregated by gender.Upon selecting a country, it displays the total number of athletes from that country also segregated by gender.
-- **Performance Participation**: Plots The number of athletes presented by each country against the number of medals they won and find the average of both metrics. The metric of the bubble is conversion rate. It is determined by how efficiently a country's athlete participation translated to medal wins. So high number of athletes participation with relatively low medal returns gives a lower conversion rate etc. 
+- **Medallists Leaderboard**: Displays the total number of medals won by an athlete, their name,country,gender and discipline of athletes who won medals **only**.This is sorted in descending order. When a country is selected, it displays the medallists and their corresponding data for the selected country.<br>
+Data Source = fact_athlete_perf
+- **Podium Profile** : Displays the type of medals won by the athletes<br>
+Data Source = fact_athlete_perf
+- **Number of participating athletes,Gender Doughnut**: By default displays the total number of athletes who participated in the winter olympics segregated by gender.Upon selecting a country, it displays the total number of athletes from that country also segregated by gender.<br>
+Data Source = dim_athletes
+- **Performance Participation**: Plots The number of athletes presented by each country against the number of medals they won and find the average of both metrics. The metric of the bubble is conversion rate. It is determined by how efficiently a country's athlete participation translated to medal wins. So high number of athletes participation with relatively low medal returns gives a lower conversion rate etc.<br>
+Data Source = fact_country_perf
+
+Link to my dashboard : 
+https://datastudio.google.com/u/0/reporting/420ff262-7db0-4655-81cd-e04e8d949c81/page/p_nqhqaiun2d
 
 ## Prerequisites
 
@@ -75,7 +91,9 @@ Country Performances analyzes the performances of the participating countries:
 
 ## Quick Start
 
-### 1. Provision Infrastructure (Terraform) ([Configuration](terraform/README.MD#-ConfigureProjectVariables))
+Fork or clone the repository and install terraform in your cli.
+
+### 1. Infrastructure Provision(Terraform) 
 
 ```bash
 cd terraform
@@ -130,4 +148,9 @@ The dbt layer transforms raw BigQuery tables into a star schema:
 
 **Facts:** `fact_athlete_perf`, `fact_country_perf`, `fact_discipline`
 
-### 5. Visualization 
+---
+
+## Acknowledgments
+
+**Special thanks to [DataTalks Club](https://datatalks.club/)** for providing the comprehensive data engineering curriculum and platform that guided this project. This pipeline was developed as a **Capstone Project** requirement for the DataTalks Club Data Engineering Zoomcamp, showcasing end-to-end data engineering practices from infrastructure provisioning through analytics visualization.
+

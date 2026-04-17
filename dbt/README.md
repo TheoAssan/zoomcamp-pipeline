@@ -4,7 +4,31 @@ This dbt project transforms raw Olympic data (loaded into BigQuery by Airflow) i
 
 > **Note:** This project was developed and tested on **dbt Cloud**. Follow the setup instructions below to reproduce it.
 
-## Data Model
+
+
+## Setup (dbt Cloud)
+
+
+1. Create a **dbt Cloud** account 
+2. Create a new project and connect it to your repository
+3. Set the **BigQuery connection** in **Account Settings → Projects → Connections**:
+   - Upload your GCP service account key JSON file
+   - **Dataset location must match what you originally used as your default location in Terraform. If you did not alter the default location in Terraform, it is likely 'us-central1' in dbt so ensure that it is changed to EU**
+   - use 'dbt' as the project sub-directory
+4. In dbt/models/staging/sources.yaml, change the database name to match your GCP project ID
+5. Run the following in the dbt Cloud IDE:
+   
+   ```
+   dbt build
+   ```
+
+
+## Data Model And Lineage
+
+<p >
+  <img src="../images/lineage.png" alt="DBT Lineage" width="1000"/> 
+</p>
+
 
 ### Staging Layer (`models/staging/`)
 
@@ -45,59 +69,24 @@ Mart models build the star schema from staged data.
 |---|---|
 | `ioc_codes` | International Olympics Committee country code → country name lookup (208 countries) |
 
-<p >
-  <img src="../images/lineage.png" alt="DBT Lineage" width="1000"/> 
-</p>
-
-
-## Setup (dbt Cloud)
-
-
-1. Create a **dbt Cloud** account 
-2. Create a new project and connect it to your repository
-3. Set the **BigQuery connection** in **Account Settings → Projects → Connections**:
-   - Upload your GCP service account key JSON file
-   - **Dataset location must match what you originally used as your default location in Terraform. If you did not alter the default location in Terraform, it is likely 'us-central1' in dbt so ensure that it is changed to EU**
-   - use 'dbt' as the project sub-directory
-4. In dbt/models/staging/sources.yaml, change the database name to match your GCP project ID
-5. Run the following in the dbt Cloud IDE:
-   
-   ```
-   dbt build
-   ```
-## File Structure
-
-```
-dbt/
-├── dbt_project.yml                      # Project config (name: milano_cortina_2026)
-├── packages.yml                         # dbt_utils dependency
-├── seeds/
-│   └── ioc_codes.csv                    # IOC country code lookup
-├── models/
-│   ├── staging/
-│   │   ├── sources.yaml                 # Source definitions (parameterized database)
-│   │   ├── schema.yml                   # Staging model tests & descriptions
-│   │   └── Milano_26/
-│   │       ├── stg_Milano_26__athletes_winter26.sql
-│   │       ├── stg_Milano_26__medallists_winter26.sql
-│   │       ├── stg_Milano_26__medals_winter26.sql
-│   │       └── stg_Milano_26__schedules_winter26.sql
-│   └── marts/
-│       └── core/
-│           ├── schema.yml               # Mart model tests & descriptions
-│           ├── dim_athletes.sql
-│           ├── dim_countries.sql
-│           ├── dim_discipline.sql
-│           ├── dim_events.sql
-│           ├── fact_athlete_perf.sql
-│           ├── fact_country_perf.sql
-│           └── fact_discipline.sql
-└── README.md                            # This file
-```
-
 
 ## Resources
 
 - [dbt Cloud documentation](https://docs.getdbt.com/docs/cloud/about-cloud-setup)
 - [dbt BigQuery connection](https://docs.getdbt.com/docs/cloud/connect-data-platform/connect-bigquery)
 - [dbt best practices](https://docs.getdbt.com/best-practices)
+
+---
+
+## ✨ Next Steps: Visualize Your Data
+
+Your transformed data is now ready for analysis. The final stage of the pipeline is to **visualize and explore** your Olympic data using **Looker Studio dashboards**.
+
+→ **[View Visualization & Dashboard Guide](../README.md#dashboard)**
+
+This includes:
+- **Country Performances Dashboard** — Geographic location, medal standings, and discipline breakdowns
+- **Athlete Performances Dashboard** — Medallists leaderboard, podium profiles, and participation analysis
+- **Interactive Filters** — Drill down by country, discipline, and medal type
+
+

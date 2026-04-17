@@ -14,8 +14,20 @@ mkdir -p ./logs ./plugins ./config
 
 This Airflow setup includes **two DAGs** that form the data ingestion pipeline:
 
+
 1. **`load_to_gcs`** — Downloads the Milano Cortina 2026 Olympics dataset from Kaggle, converts CSVs to Parquet, and uploads them to Google Cloud Storage.
+<p >
+  <img src="../images/dag1.png"  width="400"/> 
+</p> 
+
+
 2. **`gcs_to_bigquery`** — Reads the Parquet files from GCS and loads them into BigQuery tables.
+
+<p >
+  <img src="../images/dag2.png"  width="400"/> 
+</p> 
+
+
 
 ## Prerequisites
 
@@ -67,45 +79,20 @@ Run the DAGs **in this order**:
 
 Each DAG can be triggered via the play button (►) in the Airflow UI.
 
-## DAG Details
-
-### DAG 1: `load_to_gcs`
-
-```
-download_and_transform → upload_to_gcs
-```
-
-- **download_and_transform**: Downloads the Kaggle ZIP, extracts CSVs, converts each to Parquet with `_winter26` suffix
-- **upload_to_gcs**: Uploads all Parquet files to `gs://<bucket>/<prefix>/`
-
-### DAG 2: `gcs_to_bigquery`
-
-```
-list_gcs_files → load_to_bigquery
-```
-
-- **list_gcs_files**: Lists all `.parquet` files in the GCS prefix
-- **load_to_bigquery**: Creates the BigQuery dataset (if needed) and loads each Parquet file as a table
 
 ## What Gets Uploaded
 
 **GCS (after `load_to_gcs`):**
-```
-gs://zc-olympicsdatalake-26/Milano-Cortina-2026/
-├── athletes_winter26.parquet
-├── medals_winter26.parquet
-├── medallists_winter26.parquet
-├── schedules_winter26.parquet
-└── ... (other tables from the dataset)
-```
+
+<p >
+  <img src="../images/gcs.png"  width="400"/> 
+</p> 
 
 **BigQuery (after `gcs_to_bigquery`):**
-```
-olympics_pipeline.athletes_winter26
-olympics_pipeline.medals_winter26
-olympics_pipeline.medallists_winter26
-olympics_pipeline.schedules_winter26
-```
+
+<p >
+  <img src="../images/bq.png"  width="300"/> 
+</p> 
 
 ## Troubleshooting
 
@@ -121,21 +108,6 @@ docker-compose up -d    # Start fresh
 docker-compose logs -f airflow-scheduler
 ```
 
-## File Structure
-
-```
-airflow/
-├── dags/
-│   ├── load_to_gcs.py           # DAG 1: Kaggle → Parquet → GCS
-│   └── gcs_to_bq.py             # DAG 2: GCS → BigQuery
-├── config/
-│   └── airflow.cfg              # Airflow configuration
-├── docker-compose.yaml           # Docker services (LocalExecutor)
-├── dockerfile                    # Custom image with dependencies
-├── requirements.txt              # Pinned Python dependencies
-├── .env                          # GCP config (auto-generated, git-ignored)
-└── README.md                     # This file
-```
 
 ---
 
@@ -143,3 +115,16 @@ airflow/
 - Using more secure credential management (Google Secret Manager)
 - Setting up proper Airflow authentication
 - Adding data validation checks
+
+---
+
+## ✨ Next Steps: Transform Data with dbt
+
+The next stage of the pipeline is to **transform and model** this data using **dbt cloud** for analytics.
+
+→ **[Proceed to dbt Transformation Setup](../dbt/README.md)**
+
+This will guide you through:
+- Setting up dbt models for dimension and fact tables
+- Running data transformations on BigQuery
+- Creating dimensional and factual views for analytics

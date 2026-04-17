@@ -9,22 +9,7 @@ Ensure you have your gcp credentials and the necessary services enabled.
 
 ### Install Terraform
 
-**Linux / WSL:**
-
-```bash
-sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
-
-wget -O- https://apt.releases.hashicorp.com/gpg | \
-  gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
-
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
-  https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
-  sudo tee /etc/apt/sources.list.d/hashicorp.list
-
-sudo apt-get update && sudo apt-get install -y terraform
-```
-Note: Codespaces have a different way of installing terraform. 
-
+https://www.terraform.io/downloads
 
 **Verify installation:**
 ```bash
@@ -70,14 +55,14 @@ This reads the Terraform outputs (`outputs.tf`) and writes `../airflow/.env` wit
 
 ---
 
-## 📁 File Structure
+## ✨ Next Steps: Continue with Airflow Setup
 
-```
-terraform/
-├── main.tf           # GCS bucket + BigQuery dataset resources
-├── variables.tf      # Input variables (project_id, region,etc.)
-├── outputs.tf        # Exported values for downstream tools
-├── generate_env.sh   # Script to generate .env from outputs
-├── keys.json         # Your GCP service account key
-└── README.MD         # This file
-```
+ The next stage of the pipeline is setting up **Apache Airflow** to orchestrate data ingestion.
+
+→ **[Proceed to Airflow Pipeline Setup](../airflow/README.md)**
+
+This will guide you through:
+- Building the Airflow Docker environment
+- Running the data ingestion DAGs
+- Validating data in BigQuery
+
