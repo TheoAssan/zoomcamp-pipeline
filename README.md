@@ -53,15 +53,15 @@ The analysis answers questions such as:
 
 Country Performances analyzes the performances of the participating countries: 
 - **Geographic Location** : shows where the country is located on the world map.<br>
-Data Source = fact_country_perf
+Data Source : fact_country_perf
 
 - **Medal standings** : ranks the top 10 nations by medals won using a stacked bar which shows the number of gold, silver and bronze medals won. When a country is selected, it displays the medals won for that singular selected country.<br>
-Data Source = fact_country_perf
+Data Source : fact_country_perf
 - **Total medals** , **Number of participating countries** : are dynamic scorecards which show the total value of what they represent when unfiltered. When a country is selected, the re-aggregate the values for that singular country selected.<br>
-Data Source = fact_country_perf
+Data Source : fact_country_perf
 
 - **Medal Distribution By Discipline** : by default indicates the total number of medals awarded per discipline, when a country is selected, it shows the disciplines in which the medals were obtained.<br>
-Data Source = fact_discipline
+Data Source : fact_discipline
 
 ### Athlete Performances
 
@@ -71,22 +71,22 @@ Data Source = fact_discipline
 </p>
 
 - **Medallists Leaderboard**: Displays the total number of medals won by an athlete, their name,country,gender and discipline of athletes who won medals **only**.This is sorted in descending order. When a country is selected, it displays the medallists and their corresponding data for the selected country.<br>
-Data Source = fact_athlete_perf
+Data Source : fact_athlete_perf
 - **Podium Profile** : Displays the type of medals won by the athletes<br>
-Data Source = fact_athlete_perf
+Data Source : fact_athlete_perf
 - **Number of participating athletes,Gender Doughnut**: By default displays the total number of athletes who participated in the winter olympics segregated by gender.Upon selecting a country, it displays the total number of athletes from that country also segregated by gender.<br>
-Data Source = dim_athletes
+Data Source : dim_athletes
 - **Performance Participation**: Plots The number of athletes presented by each country against the number of medals they won and find the average of both metrics. The metric of the bubble is conversion rate. It is determined by how efficiently a country's athlete participation translated to medal wins. So high number of athletes participation with relatively low medal returns gives a lower conversion rate etc.<br>
-Data Source = fact_country_perf
+Data Source : fact_country_perf
 
-Link to my dashboard : 
+Link to my dashboard :
 https://datastudio.google.com/u/0/reporting/420ff262-7db0-4655-81cd-e04e8d949c81/page/p_nqhqaiun2d
 
 ## Prerequisites
 
 - **GCP Account** with a project and service account  | *[ Video Tutorial](https://www.youtube.com/watch?v=Y2ux7gq3Z0o&list=PL3MmuxUbc_hJed7dXYoJw8DoCuVHhGEQb&index=6)*
 - **Docker & Docker Compose** for running Airflow
-- **Terraform** CLI 
+- **Terraform** CLI
 - **dbt Cloud** account | *[ Video Tutorial](https://www.youtube.com/watch?v=J0XCDyKiU64&list=PL3MmuxUbc_hJed7dXYoJw8DoCuVHhGEQb&index=32)*
 
 ## Quick Start
@@ -95,6 +95,8 @@ Fork or clone the repository and install terraform in your cli.
 
 ### 1. Infrastructure Provision(Terraform) 
 
+**Note:** See the [Terraform Setup Guide](terraform/README.MD) for more detailed instructions.
+
 ```bash
 cd terraform
 # Place your GCP service account key as keys.json
@@ -102,8 +104,6 @@ cd terraform
 terraform init
 terraform apply
 ```
-
-> **Note:** See the [Terraform Setup Guide](terraform/README.MD) for more detailed instructions.
 
 ### 2. Generate Environment File
 
@@ -114,7 +114,7 @@ bash generate_env.sh
 
 ### 3. Start Airflow & Run DAGs
 
-> **Note:** See the [Airflow Setup Guide](airflow/README.md) for more detailed instructions.
+**Note:** See the [Airflow Setup Guide](airflow/README.md) for more detailed instructions.
 
 ```bash
 cd ../airflow
@@ -149,8 +149,12 @@ The dbt layer transforms raw BigQuery tables into a star schema:
 **Facts:** `fact_athlete_perf`, `fact_country_perf`, `fact_discipline`
 
 ---
+### 5. Visualization
+
+Make a copy of the [Master Dashboard](https://datastudio.google.com/u/0/reporting/420ff262-7db0-4655-81cd-e04e8d949c81/page/p_nqhqaiun2d) and refer to 
+[Dashboard](#dashboard) for the data sources.
+
 
 ## Acknowledgments
 
-**Special thanks to [DataTalks Club](https://datatalks.club/)** for providing the comprehensive data engineering curriculum and platform that guided this project. This pipeline was developed as a **Capstone Project** requirement for the DataTalks Club Data Engineering Zoomcamp, showcasing end-to-end data engineering practices from infrastructure provisioning through analytics visualization.
-
+**Special thanks to [DataTalks Club](https://datatalks.club/)** for providing the comprehensive data engineering curriculum and platform that guided this project. This pipeline was developed as a **Capstone Project** requirement for the DataTalks Club [Data Engineering Zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp), showcasing end-to-end data engineering practices from infrastructure provisioning through analytics visualization.
